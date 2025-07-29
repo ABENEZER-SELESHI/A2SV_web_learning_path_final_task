@@ -1,3 +1,4 @@
+//app/(components)/error.tsx
 import React from 'react'
 
 const Error = () => {

@@ -1,11 +1,14 @@
-import GoogleProvider from 'next-auth/providers/google';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import type { NextAuthOptions } from 'next-auth';
-import type { JWT } from 'next-auth/jwt';
-import type { Session, User } from 'next-auth';
+//app/api/auth/[...nextauth]/options.ts
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import type { NextAuthOptions } from "next-auth";
+import type { JWT } from "next-auth/jwt";
+import type { Session, User } from "next-auth";
 
+// Extended user interface to include accessToken and role
 interface ExtendedUser extends User {
   role?: string;
+  accessToken?: string;
 }
 
 export const options: NextAuthOptions = {
@@ -22,51 +25,44 @@ export const options: NextAuthOptions = {
       clientId: process.env.GOOGLE_ID!,
       clientSecret: process.env.GOOGLE_SECRET!,
     }),
+
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {
-          label: "email",
-          type: "text",
-          placeholder: "Your email"
-        },
-        password: {
-          label: "password",
-          type: "password",
-          placeholder: "Your password"
-        }
+        email: { label: "Email", type: "text", placeholder: "Enter email" },
+        password: { label: "Password", type: "password", placeholder: "Enter password" },
       },
       async authorize(credentials) {
         try {
           const res = await fetch("https://akil-backend.onrender.com/login", {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               email: credentials?.email,
-              password: credentials?.password
-            })
+              password: credentials?.password,
+            }),
           });
 
           if (!res.ok) {
             throw new Error("Invalid credentials");
           }
 
-          const user = await res.json();
+          const result = await res.json();
+          const user = result.data;
 
           return {
             id: user.id,
-            name: user.username,
+            name: user.name,
             email: user.email,
-            role: user.role || "user"
+            role: user.role || "user",
+            accessToken: user.accessToken,
           };
         } catch (error) {
           console.error("Login error:", error);
           return null;
         }
-      }
-    })
+      },
+    }),
   ],
 
   callbacks: {
@@ -79,7 +75,7 @@ export const options: NextAuthOptions = {
             body: JSON.stringify({
               name: user.name,
               email: user.email,
-              password: "my-google-oauth-password", 
+              password: "my-google-oauth-password",
               confirmPassword: "my-google-oauth-password",
               role: "user",
             }),
@@ -97,7 +93,6 @@ export const options: NextAuthOptions = {
           }
 
           return true;
-
         } catch (err) {
           console.error("Google signup error:", err);
           return false;
@@ -107,13 +102,19 @@ export const options: NextAuthOptions = {
       return true;
     },
 
-    async jwt({ token, user }: { token: JWT; user?: ExtendedUser }) {
-      if (user) token.role = user.role;
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+        token.accessToken = user.accessToken;
+      }
       return token;
     },
 
-    async session({ session, token }: { session: Session; token: JWT }) {
-      if (session.user) session.user.role = token.role;
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.role = token.role;
+        session.user.accessToken = token.accessToken;
+      }
       return session;
     },
   },

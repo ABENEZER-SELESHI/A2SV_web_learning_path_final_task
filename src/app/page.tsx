@@ -38,6 +38,8 @@ export default function Home() {
                 description={job.description}
                 icon={job.logoUrl}
                 company={job.orgName}
+                isBookmarked={job.isBookmarked}
+                id={job.id}
               />
             </Link>
         ))}

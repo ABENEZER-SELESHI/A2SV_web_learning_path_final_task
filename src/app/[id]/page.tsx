@@ -34,8 +34,8 @@ const GetOppsById: React.FC<DetailPageProps> = ({ params }) => {
 
   if (isError) return (<div><Error/></div>);
 
-  	const responsibilities = data?.data.responsibilities.split(".").filter((j) => j.trim() !== "");
-	const ideal_Candidate = data?.data.idealCandidate.split(".").filter((c) => c.trim() !== "");
+  const responsibilities = data?.data.responsibilities?.split(".").filter((j) => j.trim() !== "") || [];
+	const ideal_Candidate = data?.data.idealCandidate.split(".").filter((c) => c.trim() !== "") || [];
 
   return (
     <div className="text-black flex gap-[5%] p-4">

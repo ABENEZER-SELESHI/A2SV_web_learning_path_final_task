@@ -11,6 +11,7 @@ const Nav = async () => {
                 <h1>Job Searcher</h1>
                 <div className="flex gap-10">
                     <Link href="/">Home</Link>
+                    <Link href="/bookmarks">Bookmarks</Link>
                     {session ? <Link href="/api/auth/signout?callbackUrl=/">Logout</Link> : <Link href="/SignIn?callbackUrl=/">Login</Link>}
                 </div>
             </nav>

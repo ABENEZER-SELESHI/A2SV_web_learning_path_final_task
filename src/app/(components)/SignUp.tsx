@@ -1,3 +1,4 @@
+//app/(components)/SignUp.tsx
 "use client"
 
 import React, { useEffect } from 'react'
@@ -6,14 +7,8 @@ import { useRouter } from 'next/navigation'
 import { signIn, useSession } from 'next-auth/react'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
+import { SignUpType } from '../types/AuthTypes'
 
-type SignUpType = {
-  name: string,
-  email: string,
-  password: string,
-  confirmPassword: string,
-  role: string
-}
 
 const SignUp = () => {
 

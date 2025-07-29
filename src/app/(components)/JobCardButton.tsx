@@ -1,3 +1,4 @@
+//app/(components)/JobCardButton.tsx
 'use client';
 import React from 'react'
 import styles from './JobCardButton.module.css'

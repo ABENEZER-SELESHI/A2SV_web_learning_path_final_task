@@ -1,23 +1,34 @@
-//app/ui/JobCard.tsx
+//app/(components)/OpportunityCard.tsx
 import React from 'react';
 import JobCardButton from './JobCardButton';
+import BookmarkButton from './BookmarkButton';
 
 
 interface JobType {
-    icon?: string
+    id: string,
+    icon?: string,
     title: string,
     location: string[],
     description: string,
-    company: string
+    company: string,
+    isBookmarked: boolean,
 }
 
-const JobCard = ({icon, title, location, description, company}:JobType) => {
+const JobCard = ({id, icon, title, location, description, company, isBookmarked}:JobType) => {
   return (
     <div className="flex w-[919px] bg-white border-2 border-[#7C8493] rounded-2xl p-[24px] gap-4 justify-self-center">
-        <div className="w-[7rem]"><img className='w-[5rem] self-center' src={icon || "placeholder-logo.png"} alt="logo" /></div>
+        <div className="w-[7rem]">
+            <img
+                src={icon ?? 'placeholder-logo.png'}
+                alt={`logo-${id}`}
+            />
+        </div>
         <div className="w-[755px] flex flex-col gap-2">
             <div className="h-24 flex flex-col justify-start gap-1 box-border">
-                <h1 className="m-0 text-[#25324B] font-bold text-lg">{title}</h1>
+                <div className='flex justify-between'>
+                    <h1 className="m-0 text-[#25324B] font-bold text-lg">{title}</h1>
+                    <BookmarkButton isBookmarked={isBookmarked} id={id}/>
+                </div>
                 <div className="flex gap-4 text-[#7C8493] p-0 m-0">
                     <p>{company}</p>
                     <p>*</p>
