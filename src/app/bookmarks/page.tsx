@@ -1,7 +1,6 @@
 // app/bookmarks/page.tsx
 "use client";
 import { useGetBookmarkQuery } from './../services/Service';
-import Link from "next/link";
 import BookmarkCard from "./../(components)/BookmarkCard";
 import { ClipLoader } from 'react-spinners';
 import Error from './../(components)/error';
@@ -20,6 +19,8 @@ export default function BookmarksPage() {
   );
 
   if (isSuccess) {
+    const bookmarks = data?.data;
+
     return (
       <div className='flex flex-col gap-16 mt-16 mb-16'>
         <div className='flex justify-around mt-2'>
@@ -33,10 +34,11 @@ export default function BookmarksPage() {
         </div>
 
         <div className='flex flex-col gap-[1rem] items-center'>
-          {data?.data.map((bookmark) => (
+          {bookmarks && bookmarks.length > 0 ? (
+            bookmarks.map((bookmark, index) => (
               <BookmarkCard
-                key={bookmark.id}
-                eventID={bookmark.id}
+                key={index}
+                eventID={bookmark.eventID}
                 title={bookmark.title}
                 opType={bookmark.opType}
                 orgName={bookmark.orgName}
@@ -45,9 +47,16 @@ export default function BookmarksPage() {
                 logoUrl={bookmark.logoUrl}
                 location={bookmark.location[0] || "Unknown"}
               />
-          ))}
+            ))
+          ) : (
+            <div className="text-center mt-12 text-gray-600">
+              <h1 className="text-2xl font-semibold">No bookmarked jobs</h1>
+            </div>
+          )}
         </div>
       </div>
     );
   }
+
+  return null; // fallback in case nothing matches
 }

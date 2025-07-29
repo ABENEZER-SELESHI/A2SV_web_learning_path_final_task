@@ -18,5 +18,5 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ["/((?!SignUp|SignIn|verifyEmail|public-page).*)"],
+  matcher: ["/((?!SignUp|SignIn|VerifyEmail|public-page).*)"],
 }

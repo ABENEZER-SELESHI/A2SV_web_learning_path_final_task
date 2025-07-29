@@ -35,9 +35,9 @@ const BookmarkCard = ({
     <div className="flex w-[919px] bg-white border-2 border-[#7C8493] rounded-2xl p-[24px] gap-4 justify-self-center">
       <div className="w-[7rem]">
         <img
-          src={logoUrl || '/placeholder-logo.png'}
-          alt={`logo-${eventID}`}
-          className="w-full h-auto object-contain"
+        src={logoUrl && logoUrl.trim() !== "" ? logoUrl : "/placeholder-logo.png"}
+        alt={`logo-${eventID}`}
+        className="w-full h-auto object-contain"
         />
       </div>
       <div className="w-[755px] flex flex-col gap-2">

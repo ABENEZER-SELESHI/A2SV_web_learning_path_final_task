@@ -36,6 +36,8 @@ const BookmarkButton = ({ isBookmarked, id }: Props) => {
         await createBookmark(id).unwrap();
         setBookmarked(true);
       }
+
+      window.location.reload();
     } catch (error: any) {
       console.error("Bookmark error", error);
 
